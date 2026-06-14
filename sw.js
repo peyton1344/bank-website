@@ -1,11 +1,14 @@
-const CACHE_NAME = "aomdee-v1";
+const CACHE_NAME = "aomdee-v2";
 const APP_ASSETS = [
   "./",
   "./index.html",
   "./styles.css",
   "./app.js",
   "./manifest.json",
-  "./app-icon.svg"
+  "./app-icon.svg",
+  "./app-icon-192.png",
+  "./app-icon-512.png",
+  "./app-icon-maskable.png"
 ];
 
 self.addEventListener("install", (event) => {

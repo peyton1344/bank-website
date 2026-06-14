@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ออมดี | วางแผนรายรับรายจ่าย</title>
+    <meta name="theme-color" content="#0f8f68" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="ออมดี" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="icon" href="app-icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="app-icon.svg" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#">
+        <span class="brand-mark">฿</span>
+        <span>ออมดี</span>
+      </a>
+      <div class="topbar-actions">
+        <nav class="nav" aria-label="เมนูหลัก">
+          <a href="#dashboard">ภาพรวม</a>
+          <a href="#transaction-form">เพิ่มรายการ</a>
+          <a href="#insights">กราฟ</a>
+          <a href="#ai-analysis">AI รายเดือน</a>
+          <a href="#saving-plan">แผนออม</a>
+        </nav>
+        <button class="install-button hidden" id="install-app" type="button">ติดตั้งแอพ</button>
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="เปลี่ยนโหมดสี">☾</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" id="dashboard">
+        <div class="hero-copy">
+          <p class="eyebrow">วางแผนเงินแบบเห็นภาพ</p>
+          <h1>จัดการรายรับ รายจ่าย และเงินออมในที่เดียว</h1>
+          <p>
+            บันทึกเงินเข้าออก ตั้งเป้าหมายการออม และดูสัดส่วนค่าใช้จ่ายเพื่อช่วยให้ตัดสินใจเรื่องเงินได้ง่ายขึ้นทุกวัน
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#transaction-form">เพิ่มรายการใหม่</a>
+            <a class="button secondary" href="#saving-plan">ดูเป้าหมายออม</a>
+          </div>
+        </div>
+        <div class="hero-panel" aria-label="สรุปการเงิน">
+          <div>
+            <span>ยอดเงินคงเหลือ</span>
+            <strong id="hero-balance">0</strong>
+          </div>
+          <div class="mini-bars" aria-hidden="true">
+            <span style="height: 42%"></span>
+            <span style="height: 70%"></span>
+            <span style="height: 52%"></span>
+            <span style="height: 88%"></span>
+            <span style="height: 62%"></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="summary-grid" aria-label="สรุปยอดเงิน">
+        <article class="metric income">
+          <span>รายรับเดือนนี้</span>
+          <strong id="income-total">0</strong>
+        </article>
+        <article class="metric expense">
+          <span>รายจ่ายเดือนนี้</span>
+          <strong id="expense-total">0</strong>
+        </article>
+        <article class="metric saving">
+          <span>ออมได้แล้ว</span>
+          <strong id="saving-total">0</strong>
+        </article>
+        <article class="metric balance">
+          <span>คงเหลือใช้ได้</span>
+          <strong id="balance-total">0</strong>
+        </article>
+      </section>
+
+      <section class="workspace">
+        <form class="form-panel" id="transaction-form">
+          <div class="section-heading">
+            <p class="eyebrow">บันทึกรายการ</p>
+            <h2>เพิ่มรายรับหรือรายจ่าย</h2>
+          </div>
+
+          <label>
+            ประเภทรายการ
+            <select id="type" required>
+              <option value="income">รายรับ</option>
+              <option value="expense">รายจ่าย</option>
+              <option value="saving">เงินออม</option>
+            </select>
+          </label>
+
+          <label>
+            รายละเอียด
+            <input id="name" type="text" placeholder="เช่น เงินเดือน ค่าอาหาร เงินเก็บ" required />
+          </label>
+
+          <label>
+            จำนวนเงิน
+            <input id="amount" type="number" min="1" step="1" placeholder="0" required />
+          </label>
+
+          <label>
+            หมวดหมู่
+            <select id="category" required>
+              <option value="งาน">งาน</option>
+              <option value="อาหาร">อาหาร</option>
+              <option value="เดินทาง">เดินทาง</option>
+              <option value="บ้าน">บ้าน</option>
+              <option value="ออมเงิน">ออมเงิน</option>
+              <option value="อื่น ๆ">อื่น ๆ</option>
+            </select>
+          </label>
+
+          <label>
+            วันที่
+            <input id="date" type="date" required />
+          </label>
+
+          <div class="slip-field">
+            <span>สลิป</span>
+            <label class="slip-upload" for="slip-input">
+              <input id="slip-input" type="file" accept="image/*" capture="environment" />
+              <span>ถ่ายหรือแนบรูปสลิป</span>
+            </label>
+            <div class="slip-preview hidden" id="slip-preview">
+              <img id="slip-preview-image" alt="ตัวอย่างสลิป" />
+              <button class="button ghost" id="remove-slip" type="button">ลบสลิป</button>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button class="button primary full" id="submit-transaction" type="submit">บันทึกรายการ</button>
+            <button class="button ghost full hidden" id="cancel-edit" type="button">ยกเลิกแก้ไข</button>
+          </div>
+        </form>
+
+        <section class="list-panel" aria-label="รายการล่าสุด">
+          <div class="section-heading inline">
+            <div>
+              <p class="eyebrow">กระแสเงินสด</p>
+              <h2>รายการล่าสุด</h2>
+            </div>
+            <button class="icon-button" id="reset-data" type="button" title="ล้างข้อมูล">↺</button>
+          </div>
+          <div class="filter-panel" aria-label="ค้นหาและกรองรายการ">
+            <label>
+              ค้นหา
+              <input id="search-query" type="search" placeholder="ค้นหาชื่อหรือหมวดหมู่" />
+            </label>
+            <label>
+              ประเภท
+              <select id="filter-type">
+                <option value="all">ทั้งหมด</option>
+                <option value="income">รายรับ</option>
+                <option value="expense">รายจ่าย</option>
+                <option value="saving">เงินออม</option>
+              </select>
+            </label>
+            <label>
+              หมวดหมู่
+              <select id="filter-category">
+                <option value="all">ทั้งหมด</option>
+              </select>
+            </label>
+            <label>
+              เดือน
+              <select id="filter-month">
+                <option value="all">ทุกเดือน</option>
+              </select>
+            </label>
+            <button class="button ghost full" id="clear-filters" type="button">ล้างตัวกรอง</button>
+          </div>
+          <div class="export-panel" aria-label="ส่งออกข้อมูล">
+            <span>ส่งออกรายการที่แสดงอยู่</span>
+            <div class="export-actions">
+              <button class="button ghost" id="export-csv" type="button">CSV</button>
+              <button class="button ghost" id="export-excel" type="button">Excel</button>
+            </div>
+          </div>
+          <p class="filter-count" id="filter-count">แสดงรายการทั้งหมด</p>
+          <div class="transactions" id="transactions"></div>
+        </section>
+      </section>
+
+      <section class="insights-layout" id="insights">
+        <div class="section-heading">
+          <p class="eyebrow">วิเคราะห์รายจ่าย</p>
+          <h2>รายจ่ายแยกตามหมวด</h2>
+        </div>
+        <div class="chart-panel">
+          <div class="chart-bars" id="expense-chart"></div>
+          <p class="empty-chart" id="empty-chart">ยังไม่มีรายจ่ายสำหรับแสดงกราฟ</p>
+        </div>
+      </section>
+
+      <section class="ai-layout" id="ai-analysis">
+        <div class="section-heading inline">
+          <div>
+            <p class="eyebrow">AI รายเดือน</p>
+            <h2>วิเคราะห์รายรับรายจ่าย</h2>
+          </div>
+          <label class="month-picker">
+            เลือกเดือน
+            <select id="analysis-month"></select>
+          </label>
+        </div>
+        <div class="ai-board">
+          <article class="ai-card highlight">
+            <span>สรุปจาก AI</span>
+            <p id="ai-summary">กำลังวิเคราะห์ข้อมูลรายเดือน</p>
+          </article>
+          <article class="ai-card">
+            <span>ใช้เงินกับอะไรบ้าง</span>
+            <div class="ai-list" id="ai-expenses"></div>
+          </article>
+          <article class="ai-card">
+            <span>ได้เงินจากไหนบ้าง</span>
+            <div class="ai-list" id="ai-incomes"></div>
+          </article>
+          <article class="ai-card">
+            <span>คำแนะนำ</span>
+            <p id="ai-advice">เพิ่มรายการเพื่อให้ AI วิเคราะห์ได้แม่นขึ้น</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="saving-layout" id="saving-plan">
+        <div class="section-heading">
+          <p class="eyebrow">เป้าหมาย</p>
+          <h2>แผนการออม</h2>
+        </div>
+        <div class="saving-board">
+          <article class="goal-card">
+            <div class="goal-top">
+              <span id="goal-name-label">กองทุนฉุกเฉิน</span>
+              <strong id="goal-percent">0%</strong>
+            </div>
+            <div class="progress-track">
+              <span id="goal-progress"></span>
+            </div>
+            <p id="goal-note">กำลังคำนวณเป้าหมาย</p>
+          </article>
+          <form class="goal-form" id="goal-form">
+            <label>
+              ชื่อเป้าหมาย
+              <input id="goal-name" type="text" placeholder="เช่น กองทุนฉุกเฉิน" required />
+            </label>
+            <label>
+              จำนวนเงินเป้าหมาย
+              <input id="goal-amount" type="number" min="1" step="1" placeholder="50000" required />
+            </label>
+            <button class="button primary full" type="submit">บันทึกเป้าหมาย</button>
+          </form>
+          <article class="tip-card">
+            <span>คำแนะนำวันนี้</span>
+            <p id="money-tip">กันเงินออมทันทีหลังมีรายรับ จะช่วยให้เป้าหมายชัดและทำตามง่ายขึ้น</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>

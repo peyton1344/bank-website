@@ -1,0 +1,21 @@
+{
+  "name": "ออมดี - วางแผนรายรับรายจ่าย",
+  "short_name": "ออมดี",
+  "description": "แอพบันทึกรายรับรายจ่าย วิเคราะห์รายเดือน และจัดการเงินออม",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#101715",
+  "theme_color": "#0f8f68",
+  "icons": [
+    {
+      "src": "app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["finance", "productivity", "utilities"],
+  "lang": "th"
+}

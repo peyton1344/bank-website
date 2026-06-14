@@ -1,4 +1,4 @@
-const CACHE_NAME = "aomdee-v3";
+const CACHE_NAME = "aomdee-v5";
 const APP_ASSETS = [
   "./",
   "./index.html",

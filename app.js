@@ -20,6 +20,7 @@ const LEGACY_KEYS = {
 };
 
 const deviceId = getDeviceId();
+migrateLegacyStorage();
 
 function getDeviceId() {
   const saved = localStorage.getItem(DEVICE_ID_KEY);
@@ -35,11 +36,25 @@ function storageKey(name) {
 }
 
 function getLocalValue(name) {
-  return localStorage.getItem(storageKey(name)) || localStorage.getItem(LEGACY_KEYS[name]);
+  return localStorage.getItem(storageKey(name));
 }
 
 function setLocalValue(name, value) {
   localStorage.setItem(storageKey(name), value);
+}
+
+function migrateLegacyStorage() {
+  Object.entries(LEGACY_KEYS).forEach(([name, legacyKey]) => {
+    const nextKey = storageKey(name);
+    const alreadyMigrated = localStorage.getItem(nextKey) !== null;
+    const legacyValue = localStorage.getItem(legacyKey);
+
+    if (!alreadyMigrated && legacyValue !== null) {
+      localStorage.setItem(nextKey, legacyValue);
+    }
+
+    localStorage.removeItem(legacyKey);
+  });
 }
 
 const defaultDate = todayDate();

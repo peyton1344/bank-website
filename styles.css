@@ -390,6 +390,13 @@ body.dark-mode .theme-toggle {
   gap: 10px;
 }
 
+.local-note {
+  margin: -2px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
 .filter-panel {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));

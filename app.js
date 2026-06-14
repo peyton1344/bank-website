@@ -12,6 +12,36 @@ function monthKey(date) {
   return (date || todayDate()).slice(0, 7);
 }
 
+const DEVICE_ID_KEY = "aomdee-device-id";
+const LEGACY_KEYS = {
+  transactions: "aomdee-transactions",
+  goal: "aomdee-goal",
+  theme: "aomdee-theme",
+};
+
+const deviceId = getDeviceId();
+
+function getDeviceId() {
+  const saved = localStorage.getItem(DEVICE_ID_KEY);
+  if (saved) return saved;
+
+  const id = createId();
+  localStorage.setItem(DEVICE_ID_KEY, id);
+  return id;
+}
+
+function storageKey(name) {
+  return `aomdee:${deviceId}:${name}`;
+}
+
+function getLocalValue(name) {
+  return localStorage.getItem(storageKey(name)) || localStorage.getItem(LEGACY_KEYS[name]);
+}
+
+function setLocalValue(name, value) {
+  localStorage.setItem(storageKey(name), value);
+}
+
 const defaultDate = todayDate();
 
 const defaultTransactions = [
@@ -50,7 +80,7 @@ const state = {
   goal: loadGoal(),
   editingId: null,
   analysisMonth: monthKey(todayDate()),
-  theme: localStorage.getItem("aomdee-theme") || "light",
+  theme: getLocalValue("theme") || "light",
   currentSlipImage: "",
   filters: {
     query: "",
@@ -97,22 +127,22 @@ const goalAmountInput = document.querySelector("#goal-amount");
 let deferredInstallPrompt = null;
 
 function loadTransactions() {
-  const saved = localStorage.getItem("aomdee-transactions");
+  const saved = getLocalValue("transactions");
   const transactions = saved ? JSON.parse(saved) : defaultTransactions;
   return transactions.map((item) => ({ ...item, id: item.id || createId(), date: item.date || defaultDate }));
 }
 
 function loadGoal() {
-  const saved = localStorage.getItem("aomdee-goal");
+  const saved = getLocalValue("goal");
   return saved ? JSON.parse(saved) : defaultGoal;
 }
 
 function saveTransactions() {
-  localStorage.setItem("aomdee-transactions", JSON.stringify(state.transactions));
+  setLocalValue("transactions", JSON.stringify(state.transactions));
 }
 
 function saveGoal() {
-  localStorage.setItem("aomdee-goal", JSON.stringify(state.goal));
+  setLocalValue("goal", JSON.stringify(state.goal));
 }
 
 function getTotals(transactions = state.transactions) {
@@ -674,7 +704,7 @@ removeSlipButton.addEventListener("click", clearSlip);
 
 themeToggle.addEventListener("click", () => {
   state.theme = state.theme === "dark" ? "light" : "dark";
-  localStorage.setItem("aomdee-theme", state.theme);
+  setLocalValue("theme", state.theme);
   renderTheme();
 });
 
